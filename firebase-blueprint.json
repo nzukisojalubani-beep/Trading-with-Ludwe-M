@@ -1,0 +1,199 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public profile and trading preferences for an authenticated trader.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Unique Firebase Auth User UID."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Trader display name.",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Trader email address.",
+          "maxLength": 200
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Avatar URL."
+        },
+        "experienceLevel": {
+          "type": "string",
+          "enum": ["Beginner", "Intermediate", "Advanced"],
+          "description": "Self-reported trader experience level."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Account registration timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last profile update timestamp."
+        }
+      },
+      "required": ["userId", "displayName", "createdAt", "updatedAt"]
+    },
+    "Bookmark": {
+      "title": "Bookmark",
+      "description": "Saved lesson bookmark for offline study and quick access.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique bookmark document identifier."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID."
+        },
+        "articleId": {
+          "type": "string",
+          "description": "Target article ID.",
+          "maxLength": 100
+        },
+        "articleTitle": {
+          "type": "string",
+          "description": "Cached title of the saved article.",
+          "maxLength": 200
+        },
+        "category": {
+          "type": "string",
+          "description": "Article category.",
+          "maxLength": 100
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when bookmarked."
+        }
+      },
+      "required": ["id", "userId", "articleId", "createdAt"]
+    },
+    "JournalEntry": {
+      "title": "JournalEntry",
+      "description": "Personal forex trade log entry with technical parameters and execution notes.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique trade log ID."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID."
+        },
+        "pair": {
+          "type": "string",
+          "description": "Currency pair (e.g., EUR/USD, GBP/JPY).",
+          "maxLength": 20
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["BUY", "SELL"],
+          "description": "Trade execution direction."
+        },
+        "entryPrice": {
+          "type": "number",
+          "description": "Executed entry price."
+        },
+        "stopLoss": {
+          "type": "number",
+          "description": "Planned stop loss price."
+        },
+        "takeProfit": {
+          "type": "number",
+          "description": "Planned take profit price."
+        },
+        "lotSize": {
+          "type": "number",
+          "description": "Calculated position lot size."
+        },
+        "riskPercent": {
+          "type": "number",
+          "description": "Account risk percentage (e.g. 1.0, 2.0)."
+        },
+        "outcome": {
+          "type": "string",
+          "enum": ["WIN", "LOSS", "BREAKEVEN", "OPEN"],
+          "description": "Trade result."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Lessons learned and technical setup rationale.",
+          "maxLength": 2000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last modified timestamp."
+        }
+      },
+      "required": ["id", "userId", "pair", "direction", "entryPrice", "stopLoss", "takeProfit", "outcome", "createdAt", "updatedAt"]
+    },
+    "UserProgress": {
+      "title": "UserProgress",
+      "description": "Trader learning progress, completed lessons, and quiz scores.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner user UID."
+        },
+        "completedArticles": {
+          "type": "array",
+          "description": "List of finished article IDs."
+        },
+        "quizHighestScore": {
+          "type": "number",
+          "description": "Highest score achieved in the Forex Knowledge Quiz."
+        },
+        "quizTotalAttempts": {
+          "type": "number",
+          "description": "Total quiz attempts taken."
+        },
+        "lastActiveAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last active session timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last progress update timestamp."
+        }
+      },
+      "required": ["userId", "quizHighestScore", "quizTotalAttempts", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile records containing account preferences."
+    },
+    "/users/{userId}/bookmarks/{bookmarkId}": {
+      "schema": "Bookmark",
+      "description": "User specific bookmarked articles and study guides."
+    },
+    "/users/{userId}/journal/{entryId}": {
+      "schema": "JournalEntry",
+      "description": "User private trade logs and execution journal."
+    },
+    "/users/{userId}/progress/stats": {
+      "schema": "UserProgress",
+      "description": "User learning statistics, quiz performance, and completed guides."
+    }
+  }
+}

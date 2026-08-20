@@ -1,0 +1,6 @@
+{
+  "name": "Trading with Ludwe M",
+  "description": "Interactive learning and market analysis platform for Ludwe M Forex Trading Blog, featuring comprehensive trading guides, position size calculators, live charts, and AI trading assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
